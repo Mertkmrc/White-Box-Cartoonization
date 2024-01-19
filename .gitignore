@@ -8,6 +8,7 @@ __pycache__/
 *.png
 *.jpg
 *.pyc
+*.DS_store
 
 # C extensions
 *.so
