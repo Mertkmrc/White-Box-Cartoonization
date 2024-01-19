@@ -151,10 +151,10 @@ def main():
             g_loss, d_loss, recon_loss, rep_images, process_images = train_step(sample_photo, sample_cartoon, d_optimizer, g_optimizer,disc_sn_model, gen_model, guided_filter,total_iter, batch_idx)
 
         if total_iter % 5 == 0:
-            utils.save_training_images(combined_image = process_images[2], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_output_'+str(batch_idx))
-            utils.save_training_images(combined_image = process_images[1], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
-            utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
-            utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_'+str(batch_idx))
+            utils.save_training_images(combined_image = process_images[2], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_output_')
+            utils.save_training_images(combined_image = process_images[1], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_')
+            utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_')
+            utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_')
             gen_model.save_weights(args.save_dir+'/model/'.format(epoch=total_iter))
             disc_sn_model.save_weights(args.save_dir+'/model/'.format(epoch=total_iter))
 
