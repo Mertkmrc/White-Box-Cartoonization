@@ -30,7 +30,7 @@ def arg_parser():
     parser.add_argument("--use_enhance", default = False)
     if os.getenv("COLAB_RELEASE_TAG"):
         parser.add_argument("--save_dir", default = 'results', type = str)
-        parser.add_argument("--data-dir", default = '../content/drive/MyDrive/White-Box-Cartoonization/data/')
+        parser.add_argument("--data-dir", default = '/content/drive/MyDrive/White-Box-Cartoonization/data/')
     else:
         parser.add_argument("--data-dir", default = 'data/')
         parser.add_argument("--save_dir", default = 'results_local', type = str)
