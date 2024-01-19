@@ -29,7 +29,7 @@ def arg_parser():
     parser.add_argument("--gpu_fraction", default = 0.5, type = float)
     parser.add_argument("--use_enhance", default = False)
     if os.getenv("COLAB_RELEASE_TAG"):
-        parser.add_argument("--save_dir", default = 'results', type = str)
+        parser.add_argument("--save_dir", default = '/content/drive/MyDrive/White-Box-Cartoonization/results/', type = str)
         parser.add_argument("--data-dir", default = '/content/drive/MyDrive/White-Box-Cartoonization/data/')
     else:
         parser.add_argument("--data-dir", default = 'data/')
@@ -84,7 +84,7 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
 
         d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake )
         d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake )
-
+        prin
         utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
         utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
         utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
