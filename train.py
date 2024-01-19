@@ -27,8 +27,13 @@ def arg_parser():
     parser.add_argument("--total_iter", default = 100000, type = int)
     parser.add_argument("--adv_train_lr", default = 2e-4, type = float)
     parser.add_argument("--gpu_fraction", default = 0.5, type = float)
-    parser.add_argument("--save_dir", default = 'results', type = str)
     parser.add_argument("--use_enhance", default = False)
+    if os.getenv("COLAB_RELEASE_TAG"):
+        parser.add_argument("--save_dir", default = 'results', type = str)
+        parser.add_argument("--data-dir", default = '../content/drive/MyDrive/White-Box-Cartoonization/data/')
+    else:
+        parser.add_argument("--data-dir", default = 'data/')
+        parser.add_argument("--save_dir", default = 'results_local', type = str)
 
     args = parser.parse_args()
 
@@ -80,21 +85,21 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
         d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake )
         d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake )
 
-        # utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
-        # utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
-        # utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
-        # utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_'+str(batch_idx))
+        utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
+        utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
+        utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
+        utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_'+str(batch_idx))
 
         if args.use_enhance:
             sample_superpixel = utils.selective_adacolor(output, power=1.2)
-            # test_superpixel = utils.selective_adacolor(sample_photo, power=1.2)
-            # utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_selectiveColor_superpixel_'+str(batch_idx))
+            test_superpixel = utils.selective_adacolor(sample_photo, power=1.2)
+            utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_selectiveColor_superpixel_'+str(batch_idx))
         else:
             sample_superpixel = utils.simple_superpixel(output, seg_num=200)
-            # test_superpixel = utils.simple_superpixel(sample_photo, seg_num=200)
+            test_superpixel = utils.simple_superpixel(sample_photo, seg_num=200)
             sample_superpixel_converted = sample_superpixel.astype(np.float32)
-            # utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_'+str(batch_idx))
-            # utils.save_training_images(combined_image = sample_superpixel_converted, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_converted'+str(batch_idx))
+            utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_'+str(batch_idx))
+            utils.save_training_images(combined_image = sample_superpixel_converted, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_converted'+str(batch_idx))
         sample_superpixel_converted = sample_superpixel.astype(np.float32)
 
         vgg_model = loss.Vgg19('data/vgg19_no_fc.npy')
@@ -130,7 +135,7 @@ def main():
     tf.config.run_functions_eagerly(True)
 
 
-    photo_dir, cartoon_dir = 'data/normal', 'data/cartoon'
+    photo_dir, cartoon_dir = args.data_dir+'normal', args.data_dir+'cartoon'
     guided_filter = GuidedFilter()
     # face_photo_list = os.listdir(face_photo_dir)
     # face_cartoon_list = os.listdir(face_cartoon_dir_kyoto_face)

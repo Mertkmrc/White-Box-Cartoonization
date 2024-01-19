@@ -11,7 +11,8 @@ class MyTFDataset(tf.keras.utils.Sequence):
         self.root_B = root_B
         self.root_C = root_C
         self.root_D = root_D
-
+        print(root_A)
+        print(root_B)
         self.A_images = sorted(os.listdir(root_A), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         self.B_images = sorted(os.listdir(root_B), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         # if root_C != '':   self.C_images = sorted(os.listdir(root_C), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
@@ -58,7 +59,7 @@ class MyTFDataset(tf.keras.utils.Sequence):
             cartoon_data.append(cartoon_photo)
 
         return np.array(normal_data), np.array(cartoon_data)
-    
+
 
 class MyTestTFDataset(tf.keras.utils.Sequence):
     def __init__(self, root_A, batch_size):
