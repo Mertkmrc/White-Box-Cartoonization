@@ -84,21 +84,21 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
 
         d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake )
         d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake )
-        utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
-        utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
-        utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
-        utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_'+str(batch_idx))
+        # utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
+        # utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
+        # utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
+        # utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_'+str(batch_idx))
 
         if args.use_enhance:
             sample_superpixel = utils.selective_adacolor(output, power=1.2)
-            test_superpixel = utils.selective_adacolor(sample_photo, power=1.2)
-            utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_selectiveColor_superpixel_'+str(batch_idx))
+            # test_superpixel = utils.selective_adacolor(sample_photo, power=1.2)
+            # utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_selectiveColor_superpixel_'+str(batch_idx))
         else:
             sample_superpixel = utils.simple_superpixel(output, seg_num=200)
-            test_superpixel = utils.simple_superpixel(sample_photo, seg_num=200)
+            # test_superpixel = utils.simple_superpixel(sample_photo, seg_num=200)
             sample_superpixel_converted = sample_superpixel.astype(np.float32)
-            utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_'+str(batch_idx))
-            utils.save_training_images(combined_image = sample_superpixel_converted, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_converted'+str(batch_idx))
+            # utils.save_training_images(combined_image = test_superpixel, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_'+str(batch_idx))
+            # utils.save_training_images(combined_image = sample_superpixel_converted, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_converted'+str(batch_idx))
         sample_superpixel_converted = sample_superpixel.astype(np.float32)
 
         vgg_model = loss.Vgg19(args.data_dir + 'vgg19_no_fc.npy')
@@ -143,9 +143,10 @@ def main():
     my_dataset = MyTFDataset(photo_dir,cartoon_dir, 16)
     d_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
     g_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
-    disc_sn_model = network.disc_sn()
-    gen_model = network.UNetGenerator()
-
+    # disc_sn_model = network.disc_sn()
+    # gen_model = network.UNetGenerator()
+    gen_model = tf.keras.models.load_model(args.save_dir + 'models/generator_last.keras')
+    disc_sn_model = tf.keras.models.load_model(args.save_dir + 'models/discriminator_last.keras')
     # for total_iter in tqdm(range(args.total_iter)):
     for total_iter in tqdm(range(200)):
         print('='* 90)
