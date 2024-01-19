@@ -155,12 +155,12 @@ def main():
         utils.save_training_images(combined_image = process_images[1], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_')
         utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_')
         utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_')
-        gen_model.save_weights(args.save_dir+'/model/'.format(epoch=total_iter))
-        disc_sn_model.save_weights(args.save_dir+'/model/'.format(epoch=total_iter))
+        gen_model.save(args.save_dir+'/model/generator_'+str(total_iter)+'.keras')
+        disc_sn_model.save(args.save_dir+'/model/discriminator'+str(total_iter)+'.keras')
 
         print('[Epoch: %d| - G loss: %.12f - D loss: %.12f - Recon loss: %.12f' % ((total_iter + 1), g_loss, d_loss, recon_loss))
-    gen_model.save_weights(args.save_dir+'/model/'.format('_last'))
-    disc_sn_model.save_weights(args.save_dir+'/model/'.format('_last'))
+    gen_model.save(args.save_dir+'/model/generator_'+str(total_iter)+'.keras')
+    disc_sn_model.save(args.save_dir+'/model/discriminator'+str(total_iter)+'.keras')
 
 
 
