@@ -144,6 +144,8 @@ def main():
 
     # for total_iter in tqdm(range(args.total_iter)):
     for total_iter in tqdm(range(200)):
+        print('='* 90)
+        print('STARTED NEW ITER', total_iter)
         for batch_idx, (sample_photo, sample_cartoon) in enumerate(my_dataset):
             g_loss, d_loss, recon_loss, rep_images, process_images = train_step(sample_photo, sample_cartoon, d_optimizer, g_optimizer,disc_sn_model, gen_model, guided_filter,total_iter, batch_idx)
 

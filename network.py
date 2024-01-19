@@ -58,7 +58,6 @@ class UNetGenerator(tf.keras.Model):
         # x2 = self.zero_padding1(x2)
         x2 = self.conv5(x2)
         x2 = self.relu5(x2)
-        print(x2.shape)
         for idx in range(self.num_blocks):
             x2 = self.resblock(x2, out_channel=self.channel*4, name='block_{}'.format(idx))
 
