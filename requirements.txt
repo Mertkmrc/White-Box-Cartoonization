@@ -4,3 +4,4 @@ tensorflow
 numpy
 tqdm
 scipy
+keras

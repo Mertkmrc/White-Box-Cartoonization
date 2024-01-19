@@ -62,10 +62,8 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
 
         gray_fake, gray_cartoon = utils.color_shift(fake_output, sample_cartoon)
 
-        d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake,
-                                                scale=1, patch=True)
-        d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake,
-                                                scale=1, patch=True)
+        d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake)
+        d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake)
         d_loss_total = (d_loss_blur + d_loss_gray)/ 2.0
         grads_d = tape_d.gradient(d_loss_total, disc_model.trainable_weights)
     d_optimizer.apply_gradients(zip(grads_d, disc_model.trainable_weights))
@@ -79,10 +77,8 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
 
         gray_fake, gray_cartoon = utils.color_shift(output, sample_cartoon)
 
-        d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake,
-                                                scale=1, patch=True, )
-        d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake,
-                                                scale=1, patch=True, )
+        d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake )
+        d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake )
 
         # utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
         # utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
