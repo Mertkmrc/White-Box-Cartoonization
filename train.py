@@ -84,7 +84,6 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
 
         d_loss_gray, g_loss_gray = loss.lsgan_loss(disc_model, gray_cartoon, gray_fake )
         d_loss_blur, g_loss_blur = loss.lsgan_loss(disc_model, blur_cartoon, blur_fake )
-        prin
         utils.save_training_images(combined_image = output, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_'+str(batch_idx))
         utils.save_training_images(combined_image = fake_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_'+str(batch_idx))
         utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_'+str(batch_idx))
