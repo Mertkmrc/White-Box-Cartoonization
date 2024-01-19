@@ -98,13 +98,20 @@ def slic(image, seg_num=200, kind='avg'):
     return image
 
 def simple_superpixel(batch_image, seg_num=200, kind='avg'):
-    num_job = np.shape(batch_image)[0]
-    out = Parallel(n_jobs=num_job)(delayed(slic)\
-                         (image, seg_num, kind) for image in batch_image)
+    np_out = []
+    for image in batch_image:
+        out = slic(image, seg_num, kind)
+        np_out.append(out)
+    return np.array(np_out, dtype=type(batch_image))
+
+# def simple_superpixel(batch_image, seg_num=200, kind='avg'):
+#     num_job = np.shape(batch_image)[0]
+#     out = Parallel(n_jobs=num_job)(delayed(slic)\
+#                          (image, seg_num, kind) for image in batch_image)
+#     np_out = np.array(out,dtype=type(batch_image))
+#     return np_out
     # segments = segmentation.slic(batch_image, n_segments=200, compactness=10)
     # out = label2rgb(segments, batch_image, kind='avg')
-    np_out = np.array(out,dtype=type(batch_image))
-    return np_out
 
 def extract_number(filename):
     match = re.search(r'\d+', filename)
