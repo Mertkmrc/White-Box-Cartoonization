@@ -102,7 +102,7 @@ def train_step(sample_photo, sample_cartoon,d_optimizer, g_optimizer, disc_model
             utils.save_training_images(combined_image = sample_superpixel_converted, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='test_simple_superpixel_converted'+str(batch_idx))
         sample_superpixel_converted = sample_superpixel.astype(np.float32)
 
-        vgg_model = loss.Vgg19('data/vgg19_no_fc.npy')
+        vgg_model = loss.Vgg19(args.data_dir + 'vgg19_no_fc.npy')
         vgg_photo = vgg_model.build_conv4_4(sample_photo)
         vgg_output = vgg_model.build_conv4_4(output)
         vgg_superpixel = vgg_model.build_conv4_4(sample_superpixel_converted)
