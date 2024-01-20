@@ -13,6 +13,8 @@ class MyTFDataset(tf.keras.utils.Sequence):
         self.root_D = root_D
         print(root_A)
         print(root_B)
+        print(os.listdir(root_A))
+        print(os.listdir(root_B))
         self.A_images = sorted(os.listdir(root_A), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         self.B_images = sorted(os.listdir(root_B), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         print(len(self.A_images))
