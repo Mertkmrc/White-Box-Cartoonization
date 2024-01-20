@@ -14,10 +14,10 @@ class MyTFDataset(tf.keras.utils.Sequence):
         print(root_A)
         print(root_B)
         self.A_images = sorted(os.listdir(root_A), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
+        self.B_images = sorted(os.listdir(root_B), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         print(len(self.A_images))
         print(len(self.B_images))
         print(len(self.B_images)//self.batch_size)
-        self.B_images = sorted(os.listdir(root_B), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         # if root_C != '':   self.C_images = sorted(os.listdir(root_C), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         # if root_D != '':  self.D_images = sorted(os.listdir(root_D), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         self.batch_size = batch_size
