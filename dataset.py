@@ -11,25 +11,17 @@ class MyTFDataset(tf.keras.utils.Sequence):
         self.root_B = root_B
         self.root_C = root_C
         self.root_D = root_D
-        print(root_A)
-        print(root_B)
-        print(len(os.listdir(root_A)))
-        print(len(os.listdir(root_B)))
         self.A_images = sorted(os.listdir(root_A), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         self.B_images = sorted(os.listdir(root_B), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
-        print(len(self.A_images))
-        print(len(self.B_images))
-        print(len(self.B_images)//self.batch_size)
-        # if root_C != '':   self.C_images = sorted(os.listdir(root_C), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
-        # if root_D != '':  self.D_images = sorted(os.listdir(root_D), key=lambda x: extract_number(x) if extract_number(x) is not None else float('inf'))
         self.batch_size = batch_size
+        
         #TODO: 10 batch scenery => 1 batch face photo parameters NOT SET YET SINCE THERE IS NO DATA.  GOTTA BE ADJUSTED
         self.face_counter = face_counter
         self.face_index = 0
 
     def __len__(self):
-        # return int((max(len(self.A_images), len(self.B_images)) // self.batch_size) * 1.1) # length for applying face data
-        return max(len(self.A_images), len(self.B_images)) // self.batch_size
+        # return int((min(len(self.A_images), len(self.B_images)) // self.batch_size) * 1.1) # length for applying face data
+        return min(len(self.A_images), len(self.B_images)) // self.batch_size
 
     def __getitem__(self, index):
         # TODO: FACE BATCH ALGO
