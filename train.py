@@ -143,10 +143,10 @@ def main():
     my_dataset = MyTFDataset(photo_dir,cartoon_dir, 16)
     d_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
     g_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
-    # disc_sn_model = network.disc_sn()
-    # gen_model = network.UNetGenerator()
-    gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_last.keras')
-    disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_last.keras')
+    gen_model = network.UNetGenerator()
+    disc_sn_model = network.disc_sn()
+    # gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_last.keras')
+    # disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_last.keras')
     # for total_iter in tqdm(range(args.total_iter)):
     for total_iter in tqdm(range(200)):
         print('='* 90)
