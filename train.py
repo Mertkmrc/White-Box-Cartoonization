@@ -143,25 +143,26 @@ def main():
     my_dataset = MyTFDataset(photo_dir,cartoon_dir, 16)
     d_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
     g_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
-    gen_model = network.UNetGenerator()
-    disc_sn_model = network.disc_sn()
-    # gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_last.keras')
-    # disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_last.keras')
+    # gen_model = network.UNetGenerator()
+    # disc_sn_model = network.disc_sn()
+    gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_8_last.keras')
+    disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_8_last.keras')
     # for total_iter in tqdm(range(args.total_iter)):
     for total_iter in tqdm(range(200)):
         print('='* 90)
         print('STARTED NEW ITER', total_iter)
         for batch_idx, (sample_photo, sample_cartoon) in enumerate(my_dataset):
-            print('batch idx',batch_idx)
             g_loss, d_loss, recon_loss, rep_images, process_images = train_step(sample_photo, sample_cartoon, d_optimizer, g_optimizer,disc_sn_model, gen_model, guided_filter,total_iter, batch_idx)
+            if batch_idx % 50 == 0:
+                print('batch idx',batch_idx)
 
         # if total_iter % 5 == 0:
-        utils.save_training_images(combined_image = process_images[2], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_output_')
-        utils.save_training_images(combined_image = process_images[1], step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_')
-        utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_')
-        utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_')
-        gen_model.save(args.save_dir+'/model/generator_'+str(total_iter)+'.keras')
-        disc_sn_model.save(args.save_dir+'/model/discriminator'+str(total_iter)+'.keras')
+        utils.save_training_images(combined_image = process_images[2], step=total_iter+9,dest_folder=args.save_dir+'/images',suffix_filename='guided_filter_output_')
+        utils.save_training_images(combined_image = process_images[1], step=total_iter+9,dest_folder=args.save_dir+'/images',suffix_filename='generator_output_')
+        utils.save_training_images(combined_image = sample_photo, step=total_iter+9,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_')
+        utils.save_training_images(combined_image = sample_cartoon, step=total_iter+9,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_')
+        gen_model.save(args.save_dir+'/model/generator_'+str(total_iter+9)+'.keras')
+        disc_sn_model.save(args.save_dir+'/model/discriminator'+str(total_iter+9)+'.keras')
 
         print('[Epoch: %d| - G loss: %.12f - D loss: %.12f - Recon loss: %.12f' % ((total_iter + 1), g_loss, d_loss, recon_loss))
     gen_model.save(args.save_dir+'/model/generator_'+str(total_iter)+'.keras')
