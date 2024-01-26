@@ -145,8 +145,8 @@ def main():
     g_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
     # gen_model = network.UNetGenerator()
     # disc_sn_model = network.disc_sn()
-    gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_12_last.keras')
-    disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_12_last.keras')
+    gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_15.keras')
+    disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_15.keras')
     # for total_iter in tqdm(range(args.total_iter)):
     for total_iter in tqdm(range(200)):
         total_iter += 13
@@ -163,11 +163,11 @@ def main():
         utils.save_training_images(combined_image = sample_photo, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_normal_')
         utils.save_training_images(combined_image = sample_cartoon, step=total_iter,dest_folder=args.save_dir+'/images',suffix_filename='input_cartoon_')
         gen_model.save(args.save_dir+'/model/generator_'+str(total_iter)+'.keras')
-        disc_sn_model.save(args.save_dir+'/model/discriminator'+str(total_iter)+'.keras')
+        disc_sn_model.save(args.save_dir+'/model/discriminator_'+str(total_iter)+'.keras')
 
         print('[Epoch: %d| - G loss: %.12f - D loss: %.12f - Recon loss: %.12f' % ((total_iter + 1), g_loss, d_loss, recon_loss))
     gen_model.save(args.save_dir+'/model/generator_'+str(total_iter)+'.keras')
-    disc_sn_model.save(args.save_dir+'/model/discriminator'+str(total_iter)+'.keras')
+    disc_sn_model.save(args.save_dir+'/model/discriminator_'+str(total_iter)+'.keras')
 
 
 
