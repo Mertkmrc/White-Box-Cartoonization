@@ -33,7 +33,7 @@ def arg_parser():
         parser.add_argument("--data-dir", default = '/content/drive/MyDrive/White-Box-Cartoonization/data/')
     else:
         parser.add_argument("--data-dir", default = 'data/')
-        parser.add_argument("--save_dir", default = 'results_local', type = str)
+        parser.add_argument("--save_dir", default = 'results_local/', type = str)
 
     args = parser.parse_args()
 

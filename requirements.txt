@@ -5,3 +5,5 @@ numpy
 tqdm
 scipy
 keras
+pandas
+pyarrow
