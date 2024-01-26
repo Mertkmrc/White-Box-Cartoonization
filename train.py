@@ -143,10 +143,10 @@ def main():
     my_dataset = MyTFDataset(photo_dir,cartoon_dir, 16)
     d_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
     g_optimizer = tf.keras.optimizers.legacy.Adam(learning_rate=0.0002)
-    # gen_model = network.UNetGenerator()
-    # disc_sn_model = network.disc_sn()
-    gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_15.keras')
-    disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_15.keras')
+    gen_model = network.UNetGenerator()
+    disc_sn_model = network.disc_sn()
+    # gen_model = tf.keras.models.load_model(args.save_dir + 'model/generator_15.keras')
+    # disc_sn_model = tf.keras.models.load_model(args.save_dir + 'model/discriminator_15.keras')
     # for total_iter in tqdm(range(args.total_iter)):
     for total_iter in tqdm(range(200)):
         total_iter += 13
